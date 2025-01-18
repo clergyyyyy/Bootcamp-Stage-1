@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Console Log</title>
+</head>
+<body>
+    <h1>Please Open Console</h1>
+    <script>
+    console.log("=== Task1 ===");
+    const messages={
+        "Leslie": "I'm at home near Xiaobitan station.",
+        "Bob": "I'm at Ximen MRT station.",
+        "Mary": "I have a drink near Jingmei MRT station.",
+        "Copper": "I just saw a concert at Taipei Arena.",
+        "Vivian": "I'm at Xindian station waiting for you.",
+    }
+
+    var record_distance={
+        "Leslie": 0,
+        "Bob": 0,
+        "Mary": 0,
+        "Copper": 0,
+        "Vivian": 0,
+    }
+
+    var friend_station_index={
+        "Leslie": 0,
+        "Bob": 0,
+        "Mary": 0,
+        "Copper": 0,
+        "Vivian": 0,
+    }
+
+    const line_1_station = ["Songshan", "Nanjing Sanmin", "Arena", "Nanjing Fuxing", "Songjiang Nanjing", "Zhongshan", "Beimen", "Ximen", "Xiaonanmen", "Chiang Kai-Shek Memorial Hall", "Guting", "Taipower Building", "Gongguan", "Wanlong", "Jingmei", "Dapingling", "Qizhang", "Xindian City Hall", "Xindian"]
+    const line_2_station = ["Qizhang", "Xiaobitan"]
+
+    function find_and_print(messages, current_station) {
+        const cleanedMessages = Object.fromEntries(
+            Object.entries(messages).map(([key, value]) => [key, value.replace(/[^\w\s]/g, '')])
+        );
+
+        const splitMessages = Object.fromEntries(
+            Object.entries(cleanedMessages).map(([key, value]) => [key, value.split(' ')])
+        );
+
+        for (const [key, message] of Object.entries(splitMessages)) {
+            const words = message || []; // 避免 null
+            for (const word of words) {
+                if (line_1_station.includes(word)) {
+                    friend_station_index[key] = line_1_station.indexOf(word);
+                    break;
+                } else if (line_2_station.includes(word)) {
+                    friend_station_index[key] = -1; // -1 indicates on line 2
+                    break;
+                }
+            }
+        }
+
+        const current_station_index = line_1_station.indexOf(current_station);
+        console.log(`Current station: ${current_station}, Index: ${current_station_index}`);
+
+        for (const [key, value] of Object.entries(friend_station_index)) {
+            const target_index = friend_station_index[key];
+            if (target_index >= 0) {
+                record_distance[key] = Math.abs(target_index - current_station_index);
+            } else {
+                record_distance[key] = Math.abs(16 - current_station_index) + 1;
+            }
+        }
+
+        const result = Object.keys(record_distance).reduce((a, b) => record_distance[a] < record_distance[b] ? a : b);
+        console.log(`Nearest friend: ${result}, Distance: ${record_distance[result]}`);
+        return result;
+    }
+
+    console.log(find_and_print(messages, "Wanlong"));
+    console.log(find_and_print(messages, "Songshan"));
+    console.log(find_and_print(messages, "Qizhang"));
+    console.log(find_and_print(messages, "Ximen"));
+    console.log(find_and_print(messages, "Xindian City Hall"));
+
+    console.log("=== Task2 ===");
+        let booked_slots = {
+            "John": [],
+            "Bob": [],
+            "Jenny": []
+        };
+
+        const consultants = [
+            { name: "John", rate: 4.5, price: 1000 },
+            { name: "Bob", rate: 3.0, price: 1200 },
+            { name: "Jenny", rate: 3.8, price: 800 }
+        ];
+
+        function book(consultants, hour, duration, criteria) {
+            let end_time = hour + duration;
+            let request_time = [hour, end_time];
+
+            let available_consultants = [];
+
+            for (let consultant of consultants) {
+                let name = consultant.name;
+                let available_status = true;
+
+                for (let slot of (booked_slots[name] || [])) {
+                    let [booked_start, booked_end] = slot;
+                    if (!(end_time <= booked_start || hour >= booked_end)) {
+                        available_status = false;
+                        break;
+                    }
+                }
+
+                if (available_status) {
+                    available_consultants.push(consultant);
+                }
+            }
+
+            if (available_consultants.length === 0) {
+                console.log("No Service");
+                return "No Service";
+            }
+
+            let selected;
+            if (criteria === "price") {
+                selected = available_consultants.reduce((prev, curr) => (prev.price < curr.price) ? prev : curr);
+            } else if (criteria === "rate") {
+                selected = available_consultants.reduce((prev, curr) => (prev.rate > curr.rate) ? prev : curr);
+            } else {
+                console.log("Error! Wrong criteria.");
+                return "Error! Wrong criteria.";
+            }
+
+            booked_slots[selected.name].push(request_time);
+            return selected.name;
+        }
+
+        console.log(book(consultants, 15, 1, "price"));  //Jenny 
+        console.log(book(consultants, 11, 2, "price"));  //Jenny 
+        console.log(book(consultants, 10, 2, "price"));  //John 
+        console.log(book(consultants, 20, 2, "rate"));   //John 
+        console.log(book(consultants, 11, 1, "rate"));   //Bob 
+        console.log(book(consultants, 11, 2, "rate"));   //No Service 
+        console.log(book(consultants, 14, 3, "price"));  //John
+    
+        console.log("=== Task3 ===");
+
+        function func(...data){
+        let result = [];
+        let middle_list = [];
+        let duplicate_middle_set = new Set();
+        let map_table = {};
+
+        for (let fullname of data) {
+            let name_length = fullname.length;
+            let middlename;
+
+            if (name_length === 1){
+                middlename = null;
+                console.log("Full name is too short");
+                continue;
+            } else if (name_length === 2 || name_length === 3) {
+                middlename = fullname[1];
+                middle_list.push(middlename);
+            } else if (name_length > 3) {
+                middlename = fullname[2];
+                middle_list.push(middlename);
+            } else {
+                console.log("Full name is too long");
+                continue;
+            }
+
+            if (map_table[middlename]) {
+                map_table[middlename].add(fullname);
+                duplicate_middle_set.add(middlename);
+            } else {
+                map_table[middlename] = new Set([fullname]);
+            }
+        }
+
+        let unique_middle_names = [...middle_list].filter((name, index, self) => self.indexOf(name) === index && self.lastIndexOf(name) === index);
+        
+        if (unique_middle_names.length === 0) {
+            console.log("No unique middle name!");
+            return;
+        } else {
+            for (let unique_name of unique_middle_names) {
+                console.log(`唯一的middle name: ${unique_name}, 全名: ${Array.from(map_table[unique_name]).join(", ")}`);
+            }
+        }
+    }
+
+    func("彭大牆", "陳王明雅", "吳明"); //彭大牆
+    func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花"); //林花花
+    func("郭宣雅", "林靜宜", "郭宣恆", "林靜花"); //沒有
+    func("郭宣雅", "夏曼藍波安", "郭宣恆"); //夏曼藍波安
+
+        console.log("=== Task4 ===");
+        function getNumber(index) {
+            let extra = 0;
+            let quotient = Math.floor(index / 3);
+            let remainder = index % 3;
+
+            if (remainder === 1) {
+                extra = 4;
+            } else if (remainder === 2) {
+                extra = 8;
+            } else {
+                extra = 0;
+            }
+
+            let total = quotient * 7 + extra;
+            return total;
+        }
+
+        console.log(getNumber(1));  //4
+        console.log(getNumber(5));  //15
+        console.log(getNumber(10)); //25
+        console.log(getNumber(30)); //70
+    </script>
+</body>
+</html>

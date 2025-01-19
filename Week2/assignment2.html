@@ -46,29 +46,48 @@
         );
 
         for (const [key, message] of Object.entries(splitMessages)) {
-            const words = message || []; // 避免 null
+            const words = message || [];
             for (const word of words) {
                 if (line_1_station.includes(word)) {
                     friend_station_index[key] = line_1_station.indexOf(word);
                     break;
                 } else if (line_2_station.includes(word)) {
-                    friend_station_index[key] = -1; // -1 indicates on line 2
+                    friend_station_index[key] = -1;
                     break;
                 }
             }
         }
 
-        const current_station_index = line_1_station.indexOf(current_station);
+        let current_station_index = line_1_station.indexOf(current_station); //新增判斷line1&2
+        let current_station_line = 1;
+        
+        if (current_station_index === -1) { //判斷line2
+            current_station_index = line_2_station.indexOf(current_station);
+            current_station_line = 2;
+        }
+
         console.log(`Current station: ${current_station}, Index: ${current_station_index}`);
 
         for (const [key, value] of Object.entries(friend_station_index)) {
-            const target_index = friend_station_index[key];
+            target_index = friend_station_index[key];
             if (target_index >= 0) {
-                record_distance[key] = Math.abs(target_index - current_station_index);
+                if (current_station_line ===1) {
+                    record_distance[key] = Math.abs(target_index - current_station_index);
+                } else {
+                    record_distance[key] = Math.abs(target_index - 16) + 1;
+                }
+            } else if (target_index < 0) {
+                target_index = Math.abs(target_index);
+                if (current_station_line ===2) {
+                    record_distance[key] = Math.abs(target_index - current_station_index);
+                } else {
+                    record_distance[key] = Math.abs(current_station_index - 16) + 1;
+                }
             } else {
-                record_distance[key] = Math.abs(16 - current_station_index) + 1;
+                console.log(`Friend station not existed in Line 1 & Line 2 for {$key}`);
             }
         }
+
 
         const result = Object.keys(record_distance).reduce((a, b) => record_distance[a] < record_distance[b] ? a : b);
         console.log(`Nearest friend: ${result}, Distance: ${record_distance[result]}`);
@@ -80,6 +99,7 @@
     console.log(find_and_print(messages, "Qizhang"));
     console.log(find_and_print(messages, "Ximen"));
     console.log(find_and_print(messages, "Xindian City Hall"));
+    console.log(find_and_print(messages, "Xiaobitan"));
 
     console.log("=== Task2 ===");
         let booked_slots = {

@@ -13,18 +13,36 @@ def find_and_print(messages, current_station):
                 friend_station_index[key] = line_1_station.index(word)
                 break
             elif word in line_2_station:
-                friend_station_index[key] = -1  #-1表示在 line_2
+                friend_station_index[key] = -line_2_station.index(word)  # 負數表示在 line 2
                 break
+                                
+
     
     # 用current_station的值找list的index
-    current_station_index = line_1_station.index(current_station)
+    if current_station in line_1_station:
+        current_station_index = line_1_station.index(current_station)
+        current_station_line = 1
+    elif current_station in line_2_station:
+        current_station_index = line_2_station.index(current_station) 
+        current_station_line = 2
+    else:
+        print(f"Current station not existed in Line 1 & Line 2")
+        return
+
     print(f"Current station: ", current_station, " Index: ", current_station_index)
-    for key, value in friend_station_index.items():
-        target_index = friend_station_index.get(key)
-        if target_index > 0 or target_index == 0:
-            record_distance[key] = abs(target_index - current_station_index)
-        elif target_index < 0: #target station在line 2
-            record_distance[key] = abs(16 - current_station_index) + 1
+    for key, target_index in friend_station_index.items():
+        if target_index >= 0: #friend in line1
+            if current_station_line == 1:
+                record_distance[key] = abs(target_index - current_station_index)
+            elif current_station_line == 2: #target station在line 2
+                record_distance[key] = abs(16 - current_station_index) + 1 + target_index
+        elif target_index < 0: #friend in line2
+            target_index = abs(target_index)
+            if current_station_line == 2:
+                record_distance[key] = abs(target_index-current_station_index)
+            elif current_station_line == 1: #friend in line1
+                record_distance[key] = abs(current_station_index - 16) + 1 + abs(target_index)
+    
     result = min(record_distance, key=record_distance.get)
     print(f"Nearest friend: {result}, distance: {record_distance[result]}")
 
@@ -64,6 +82,7 @@ find_and_print(messages, "Songshan")
 find_and_print(messages, "Qizhang")
 find_and_print(messages, "Ximen")
 find_and_print(messages, "Xindian City Hall")
+find_and_print(messages, "Xiaobitan")
 
 print("===Task 2===")
 booked_slots = {

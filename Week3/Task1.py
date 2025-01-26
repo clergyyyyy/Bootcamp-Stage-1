@@ -126,7 +126,8 @@ for station, titles in mrt_dict.items():
 
 output_file_mrt = "mrt.csv"
 with open(output_file_mrt, "w", encoding="utf-8", newline="") as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=["MRTStation", "AttractionTitle"])
-    writer.writeheader()
-    writer.writerows(merged_results)
+    writer = csv.writer(csvfile)
+    for station, titles in mrt_dict.items(): #each attraction in separate cell
+        row = [station] + titles 
+        writer.writerow(row)
 print(f"CSV output complete: {output_file_mrt}")

@@ -477,7 +477,10 @@ h2 {
 }
     
     @media screen and (min-width: 360px) and (max-width: 600px) {
-        
+            .card h2 {
+                width: 100%;
+            }
+
             .menu {
               display: none; 
             }
@@ -551,7 +554,7 @@ h2 {
     @media screen and (max-width: 360px) {
 
         .card h2 {
-            width: 100%; /* 不扣除寬度，撐滿容器 */
+            width: 100%;
         }
 
         .content {

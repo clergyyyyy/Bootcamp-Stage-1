@@ -2,9 +2,9 @@ html, body {
     font-size: 20px;
     margin: 0;
     padding: 0px;
-    box-sizing: border-box; /* 可選：確保計算寬度時包括邊框和內距 */
-    max-width: 1920px; /* 設定最大寬度 */
-    overflow-x: hidden; /* 隱藏橫向捲軸 */
+    box-sizing: border-box; 
+    max-width: 1920px; 
+    overflow-x: hidden; 
 }
 
 .nav {
@@ -29,7 +29,7 @@ html, body {
 }
 
 .item {
-    text-decoration: none; /* 移除連結的預設底線 */
+    text-decoration: none; 
     color: #333;
     font-size: 20px;
     padding: 0 8px 0 8px;
@@ -69,11 +69,11 @@ h2 {
 }
 
 .banner {
-    display: flex; /* 啟用 flexbox */
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中 */
-    height: 250px; /* 確保有固定高度 */
-    background-color: #DDEEF8; /* 可選：背景色 */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 250px; 
+    background-color: #DDEEF8; 
 }
 
 .banner .h1 {
@@ -110,8 +110,11 @@ h2 {
 }
 
 .promotion img {
+    min-width: 80px;
     width: 80px;
     height: 50px;
+    object-fit: cover;
+    display: block;
 }
 
 .promotion h2 {
@@ -120,12 +123,15 @@ h2 {
     font-size: 20px;
     padding: 0 8px;
     box-sizing: border-box;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 }
 
 
 .small-box {
     padding: 8px 0;
-    width: 100%; /* 撐滿父容器 */
+    width: 100%; 
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -134,11 +140,6 @@ h2 {
     gap: 20px;
     margin: 0px;
 
-}
-
-.promotion img {
-    width: 80px;
-    height: 100%;
 }
 
 
@@ -161,10 +162,9 @@ h2 {
 .big-box {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* 卡片均勻分佈 */
-    gap: 20px; /* 使用 gap 來設置卡片間距 */
+    justify-content: flex-start;
+    gap: 20px; 
     padding: 8px 0;
-    width: 100%;
     box-sizing: border-box;
 }
 
@@ -174,10 +174,10 @@ h2 {
     flex-wrap: wrap;
     position: relative;
     overflow: hidden;
-    flex-basis: 100px; /* 設定基礎寬度 */
-    max-width: calc((100% - 40px) / 5); /* 最大寬度 */
-    min-width: 100px; /* 設定最小寬度，避免過小 */
-    margin: 0px; /* 調整卡片間距 */
+    max-width: calc((100% - 40px) / 5); 
+    min-width: 100px; 
+    max-height: 240px;
+    margin: 0px; 
     align-items: center;
     background-color: #CCDEE8;
     text-align: center;
@@ -185,26 +185,60 @@ h2 {
 
 
 .card h2 {
-    position: absolute; /* 標題絕對定位在 container 內 */
-    bottom: 0; /* 將標題固定在 container 底部 */
+    position: absolute; 
+    bottom: 0; 
     width: 100%;
+    object-fit: cover;
     margin: 0;
-    padding: 0px;
-    background-color: rgba(255, 255, 255, 0.5); /* 半透明背景讓文字更清晰 */
-    color: #000; /* 文字顏色 */
-    font-size: 20px; /* 根據需求調整字體大小 */
-    text-align: center; /* 文字水平置中 */
-    z-index: 2; /* 標題層級高於圖片 */
+    padding: 0 4px 0 4px;
+    background-color: rgba(255, 255, 255, 0.5); 
+    color: #000; 
+    font-size: 20px; 
+    text-align: center; 
+    z-index: 2; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    width: calc(100% - 8px); 
 }
 
 .card img {
-    width: 100%; /* 圖片寬度撐滿卡片容器 */
-    height: 100%; /* 高度撐滿卡片容器 */
-    object-fit: cover; /* 裁剪圖片以填滿容器，保持比例 */
-    display: block; /* 避免圖片底部出現多餘空白 */
-    margin: 0; /* 移除圖片外部空隙 */
-    padding: 0; /* 移除內部填充 */
-    box-sizing: border-box; /* 包含邊框和內距在寬高計算內 */
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; 
+    max-height: 100%; 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    max-height: inherit; 
+}
+
+.load-container {
+    display: flex;
+    flex: 1 1 100%; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    display: block; 
+}
+
+.loadbtn {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: center;
+    gap: 20px;
+    margin: 0px;
+    padding: 8px 0;
+    width: 100%;
+}
+
+.loadbtn h2 {
+    text-align: center;
+    background: #E8E8E8;
+    justify-content: center; 
+    padding: 8px;
+    cursor: pointer;
 }
 
 .menu-toggle {
@@ -212,22 +246,22 @@ h2 {
 }
 
 .menu-toggle .close {
-  display: none; /* 默認隱藏關閉按鈕 */
+  display: none; 
 }
 
 .close-btn {
-    position: absolute; /* 固定在側選單內 */
-    top: 10px; /* 距離側選單頂部 10px */
-    right: 10px; /* 距離側選單右邊 10px */
-    border: none; /* 移除邊框 */
-    font-size:  24px; /* 調整字體大小 */
-    cursor: pointer; /* 滑鼠懸停顯示手型 */
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    border: none; 
+    font-size:  24px; 
+    cursor: pointer; 
 }
 
 .side-menu {
   position: fixed;
   top: 0;
-  right: -360px; /* 隱藏在螢幕外 */
+  right: -360px; 
   width: 120px;
   height: 100%;
   background: #fff;
@@ -240,7 +274,7 @@ h2 {
   display: block;
   margin: 0;
   padding: 8px;
-  max-width: calc(20%px); /* 限制最大寬度 */
+  max-width: calc(20%px); 
 }
 
 .side-menu ul {
@@ -249,19 +283,19 @@ h2 {
     margin: 0;
     padding: 0;
     display: flex;
-    flex-wrap: wrap; /* 啟用換行 */
+    flex-wrap: wrap; 
   }
   
   .side-menu ul li {
     top: 20px;
-    width: 100%; /* 撐滿側選單寬度 */
-    white-space: nowrap; /* 防止文字換行 */
+    width: 100%; 
+    white-space: nowrap; 
     margin: 0px;
-    padding: 8px; /* 項目內距 */
-    box-sizing: border-box; /* 包括邊框與內距 */
-    text-align: left; /* 文字靠左對齊 */
+    padding: 8px; 
+    box-sizing: border-box; 
+    text-align: left; 
     cursor: pointer;
-    font-size: 18px; /* 可調整文字大小 */
+    font-size: 18px; 
   }
   
 
@@ -271,27 +305,27 @@ h2 {
 }
 
 .side-menu.active {
-  right: 0; /* 顯示側選單 */
+  right: 0; 
 }
 
  
 @media screen and (min-width: 1200px) {
 
     .menu {
-        display: block; /* 隱藏原本的 menu */
+        display: block; 
     }
     .menu-toggle {
-        display: none; /* 顯示漢堡選單 */
+        display: none; 
     }
 
     .container2 {
-        width: 90%; /* 寬度設為父容器的 90% */
+        width: 90%; 
     }
 
     .small-box {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px; /* 間距 */
+        gap: 8px; 
         justify-content: space-between;
     }
     
@@ -310,53 +344,59 @@ h2 {
         width: 80px;
         height: 50px;
         object-fit: cover;
-        margin-right: 10px;
+        margin:0;
     }
 
     .promotion h2 {
         font-size: 20px;
         margin: 0;
+        padding: 0 4px;
     }
 
     .big-box {
         margin: 12px 0;
         padding: 0px;
         display: flex;
-        flex-wrap: wrap; /* 啟用換行 */
-        gap: 20px; /* 設置卡片之間的間距 */
-        justify-content: space-between; /* 從左排列 */
+        flex-wrap: wrap; 
+        gap: 20px; 
+        justify-content: space-between; 
     }
 
     .big-box .card {
         margin: 0px;
-        box-sizing: border-box; /* 包括內距和邊框在內 */
+        box-sizing: border-box; 
     }
 
-    /* 設定每行中的比例 */
+    
     .big-box .card:nth-child(5n+1) {
-        flex: 1 1 calc((100% - 40px) / 3); /* 每行的第一個卡片寬度占 2 倍 */
-        max-width: calc((100% - 40px) / 3); /* 限制最大寬度 */
+        flex: 1 1 calc((100% - 40px) / 3); 
+        max-width: calc((100% - 40px) / 3); 
     }
 
     .big-box .card:nth-child(5n+2),
     .big-box .card:nth-child(5n+3),
     .big-box .card:nth-child(5n+4),
     .big-box .card:nth-child(5n+5) {
-        flex: 1 1 calc(1% - 20px); /* 其餘卡片占 1 倍寬度 */
-        max-width: calc(20% - 20px); /* 限制最大寬度 */
+        flex: 1 1 calc(1% - 20px); 
+        max-width: calc(20% - 20px); 
+    }
+
+    .bix-box .loadbtn {
+        flex: wrap; 
+        width:auto;
     }
 
     .big-box .card img {
-        max-width: 100%; /* 圖片寬度與卡片一致 */
-        max-height: 100%; /* 保持圖片比例 */
-        object-fit: cover; /* 確保圖片填滿卡片 */
+        max-width: 100%; 
+        max-height: 100%; 
+        object-fit: cover; 
     }
 
     .big-box .card h2 {
-        text-align: center; /* 標題置中 */
-        font-size:20px; /* 調整字體大小 */
+        text-align: center; 
+        font-size:20px; 
         margin: 0;
-        padding: 8px 0;
+        padding: 8px;
     }
 }
 
@@ -365,47 +405,48 @@ h2 {
 @media screen and (min-width: 601px) and (max-width: 1200px) {
 
     .menu {
-        display: block; /* 隱藏原本的 menu */
+        display: block; 
     }
     .menu-toggle {
-        display: none; /* 顯示漢堡選單 */
+        display: none; 
     }
 
     .side-menu {
-        right: -360px; /* 確保小螢幕也維持隱藏 */
+        right: -360px; 
       }
 
     .container2 {
-        width: 90%; /* 寬度設為父容器的 90% */
+        width: 90%; 
         display: flex;
-        flex-wrap: wrap; /* 啟用換行 */
-        justify-content: flex-start; /* 保持子元素從左開始排列 */
+        flex-wrap: wrap; 
+        justify-content: flex-start; 
     }
 
     .promotion {
-        flex: 1 1 calc((100% - 20px) / 2); /* 每行兩個元素，考慮 gap */
+        flex: 1 1 calc((100% - 20px) / 2); 
         max-width: calc((100% - 20px) / 2);
-        box-sizing: border-box; /* 確保內距和邊框不影響寬度計算 */
-        margin: 0; /* 移除多餘 margin */
+        box-sizing: border-box; 
+        margin: 0; 
     }
 
     .promotion:nth-child(3) {
-        flex: 0 1 100%; /* 第三個元素占滿一行 */
+        flex: 0 1 100%; 
         max-width: 100%;
     }
 
     .promotion img {
-        width: 80px; /* 固定圖片寬度 */
-        height: 50px; /* 固定圖片高度 */
-        object-fit: cover; /* 保持比例並裁剪 */
-        margin: 0 auto; /* 圖片水平居中 */
+        width: 80px; 
+        height: 50px; 
+        display: block; 
+        object-fit: cover; 
+        margin: 0; 
     }
 
     .promotion h2 {
-        width: 100%; /* h2 寬度自適應父容器 */
-        text-align: left; /* 文字靠左對齊 */
+        width: 100%; 
+        text-align: left; 
         font-size: 20px;
-        margin: 0; /* 移除 h2 的 margin */
+        margin: 0; 
     }
 
     .big-box {
@@ -413,35 +454,36 @@ h2 {
         padding: 0px;
     }
 
-    .big-box .card:nth-child(1),
-    .big-box .card:nth-child(2),
-    .big-box .card:nth-child(3),
-    .big-box .card:nth-child(4),
-    .big-box .card:nth-child(5),
-    .big-box .card:nth-child(6),
-    .big-box .card:nth-child(7),
-    .big-box .card:nth-child(8)  {
-        flex: 1 1 calc((100% - 60px) / 4); /* 每行的第一個卡片寬度占 2 倍 */
-        max-width: calc((100% - 60px) / 4); /* 限制最大寬度 */
+    .big-box .card:nth-child(n+1),
+    .big-box .card:nth-child(n+2),
+    .big-box .card:nth-child(n+3),
+    .big-box .card:nth-child(n+4),
+    .big-box .card:nth-child(n+5),
+    .big-box .card:nth-child(n+6),
+    .big-box .card:nth-child(n+7),
+    .big-box .card:nth-child(n+8)  {
+        flex: 1 1 calc((100% - 60px) / 4); 
+        max-width: calc((100% - 60px) / 4); 
     }
 
-    .big-box .card:nth-child(9),
-    .big-box .card:nth-child(10) {
-        flex: 1 1 calc((100% - 20px) / 2); /* 每行兩個元素，考慮 gap */
-        max-width: calc((100% - 20px) / 2); /* 確保每個元素最大寬度 */
-    }    
-    } 
+    .big-box .card:nth-last-child(2),
+    .big-box .card:nth-last-child(1) {
+        flex: 1 1 calc((100% - 20px) / 2); 
+        max-width: calc((100% - 20px) / 2); 
+        max-height: 240px;
+        box-sizing: border-box; 
+    }
 
- 
+}
     
     @media screen and (min-width: 360px) and (max-width: 600px) {
         
             .menu {
-              display: none; /* 隱藏原本的 menu */
+              display: none; 
             }
             
             .menu-toggle {
-              display: block; /* 顯示漢堡選單 */
+              display: block; 
             }
 
         .content {
@@ -450,64 +492,60 @@ h2 {
             align-items: center;
         }    
         .container2 {
-            width: 90%; /* 寬度設為父容器的 90% */
+            width: 90%; 
             display: flex;
-            flex-wrap: wrap; /* 啟用換行 */
+            flex-wrap: wrap; 
             margin: 0px;
-            justify-content: center; /* 從左對齊 */
+            justify-content: center; 
             align-items: center;
         }
     
         .promotion {
-            flex: 1 1 100%; /* 每個元素占滿一行 */
-            max-width: 100%; /* 確保最大寬度為 100% */
-            box-sizing: border-box; /* 確保內距和邊框不影響寬度計算 */
-            margin: 0; /* 避免額外的間距 */
+            flex: 1 1 100%; 
+            max-width: 100%; 
+            box-sizing: border-box; 
+            margin: 0; 
         }
     
         .promotion img {
-            width: 80px; /* 固定圖片寬度 */
-            height: 50px; /* 固定圖片高度 */
-            object-fit: cover; /* 保持圖片比例 */
-            margin: 0; /* 圖片的外距設為 0 */
+            width: 80px; 
+            height: 50px; 
+            margin: 0; 
         }
     
         .promotion h2 {
-            width: 100%; /* 標題寬度撐滿父容器 */
-            text-align: left; /* 文字靠左對齊 */
-            font-size: 20px; /* 調整字體大小 */
-            margin: 0; /* 移除標題外距 */
+            width: 100%; 
+            text-align: left; 
+            font-size: 20px; 
+            margin: 0; 
         }
     
         .big-box {
             display: flex;
-            flex-wrap: wrap; /* 啟用換行 */
-            gap: 20px; /* 保持間距 */
-            justify-content: flex-start; /* 從左對齊 */
-            width: 100%; /* 父容器寬度撐滿 */
-            margin: 12px 0;
-            padding: 0;
+            flex-wrap: wrap;
+            gap: 20px;
         }
     
         .big-box .card {
-            flex: 1 1 100%; /* 每個卡片占滿整行 */
-            max-width: 100%; /* 確保卡片寬度撐滿父容器 */
-            box-sizing: border-box; /* 包括內距和邊框在內 */
+            flex: 1 1 calc((100% - 60px) / 4); 
+            max-width: calc((100% - 60px) / 4); 
+            box-sizing: border-box;
             margin: 0;
         }
     
         .big-box .card img {
-            width: 100%; /* 圖片寬度與卡片一致 */
-            height: auto; /* 保持圖片比例 */
-            object-fit: cover; /* 確保圖片填滿卡片 */
+            width: 100%;
+            height: auto; 
+            object-fit: cover;  
         }
     
         .big-box .card h2 {
-            text-align: center; /* 標題置中 */
-            font-size: 20px; /* 調整字體大小 */
+            text-align: center;
+            font-size: 20px;
             margin: 0;
             padding: 10px 0;
         }
+
     }
 
     @media screen and (max-width: 360px) {
@@ -518,70 +556,70 @@ h2 {
         }
 
         .side-menu {
-            right: -360px; /* 確保小螢幕也維持隱藏 */
+            right: -360px; 
           } 
         
         .menu {
-              display: none; /* 隱藏原本的 menu */
+              display: none; 
         }
         .menu-toggle {
-              display: block; /* 顯示漢堡選單 */
+              display: block; 
         }
         .container2 {
-            width: 90%; /* 寬度設為父容器的 90% */
+            width: 90%; 
             display: flex;
-            flex-wrap: wrap; /* 啟用換行 */
-            gap: 8px; /* 保持間距 */
+            flex-wrap: wrap; 
+            gap: 8px; 
             justify-content: center;
         }
     
         .promotion {
-            flex: 1 1 100%; /* 每個元素占滿一行 */
-            max-width: 100%; /* 確保最大寬度為 100% */
-            box-sizing: border-box; /* 確保內距和邊框不影響寬度計算 */
-            margin: 0; /* 避免額外的間距 */
+            flex: 1 1 100%; 
+            max-width: 100%; 
+            box-sizing: border-box; 
+            margin: 0; 
         }
     
         .promotion img {
-            width: 80px; /* 固定圖片寬度 */
-            height: 50px; /* 固定圖片高度 */
-            object-fit: cover; /* 保持圖片比例 */
-            margin: 0; /* 圖片的外距設為 0 */
+            width: 80px; 
+            height: 50px; 
+            object-fit: cover; 
+            margin: 0; 
         }
     
         .promotion h2 {
-            width: 100%; /* 標題寬度撐滿父容器 */
-            text-align: left; /* 文字靠左對齊 */
-            font-size: 20px; /* 調整字體大小 */
-            margin: 0; /* 移除標題外距 */
+            width: 100%; 
+            text-align: left; 
+            font-size: 20px; 
+            margin: 0; 
         }
     
         .big-box {
             display: flex;
-            flex-wrap: wrap; /* 啟用換行 */
-            gap: 8px; /* 保持間距 */
-            justify-content: flex-start; /* 從左對齊 */
-            width: 100%; /* 父容器寬度撐滿 */
+            flex-wrap: wrap; 
+            gap: 8px; 
+            justify-content: flex-start; 
+            width: 100%; 
             margin: 0;
             padding: 0;
         }
     
         .big-box .card {
-            flex: 1 1 100%; /* 每個卡片占滿整行 */
-            max-width: 100%; /* 確保卡片寬度撐滿父容器 */
-            box-sizing: border-box; /* 包括內距和邊框在內 */
+            flex: 1 1 100%; 
+            max-width: 100%; 
+            box-sizing: border-box; 
             margin: 0;
         }
     
         .big-box .card img {
-            width: 100%; /* 圖片寬度與卡片一致 */
-            height: auto; /* 保持圖片比例 */
-            object-fit: cover; /* 確保圖片填滿卡片 */
+            width: 100%; 
+            height: auto; 
+            object-fit: cover; 
         }
     
         .big-box .card h2 {
-            text-align: center; /* 標題置中 */
-            font-size: 20px; /* 調整字體大小 */
+            text-align: center; 
+            font-size: 20px; 
             margin: 0;
             padding: 10px 0;
         }

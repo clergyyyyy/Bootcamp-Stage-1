@@ -552,7 +552,6 @@ h2 {
     }
 
     @media screen and (max-width: 360px) {
-
         .card h2 {
             width: 100%;
         }

@@ -16,7 +16,7 @@ def extract_first_jpg(filelist):
 url1 = 'https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1'
 url2 = 'https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-2'
 
-# 1. 讀取兩個 JSON
+
 try:
     with urllib.request.urlopen(url1, timeout=5) as response1:
         data_json_1 = json.loads(response1.read().decode('utf-8'))
@@ -51,32 +51,27 @@ except Exception as e:
 
 print("Both requests completed successfully.")
 
-# 2. 取得資料清單
 data_list_2 = data_json_2["data"]
 data_list_1 = data_json_1["data"]
 data_list_1_layer2 = data_list_1["results"]
 
-# -----------------------------
-# 3. 以 SERIAL_NO 為 key 的字典
-# -----------------------------
-data_2_mapping = {}  # <--- 改成字典
+data_2_mapping = {}
 pattern_dist = r"臺北市\s*([\u4e00-\u9fa5]{2,3}區)"
 
 for item in data_list_2:
-    s_no = item.get("SERIAL_NO", "").strip()  # <--- 取出 SERIAL_NO
+    s_no = item.get("SERIAL_NO", "").strip()
     station = item.get("MRT", "").strip()
     address = item.get("address", "").strip()
 
     match = re.search(pattern_dist, address)
     district = match.group(1) if match else "未知區"
 
-    # 放進 dict
     data_2_mapping[s_no] = {
         "MRT": station,
         "District": district
     }
 
-# 4. 產生 spot.csv 的內容
+
 final_results = []
 for item in data_list_1_layer2:
     attraction_title = item.get("stitle", "").strip()
@@ -85,8 +80,6 @@ for item in data_list_1_layer2:
     latitude = item.get("latitude", "").strip()
     filelist = item.get("filelist", "").strip()
     image_url = extract_first_jpg(filelist) if filelist else None
-
-    # 新增：透過 SERIAL_NO 去 mapping
     s_no = item.get("SERIAL_NO", "").strip()
     mrt_station = "None"
     district = "None"
@@ -95,9 +88,6 @@ for item in data_list_1_layer2:
         mrt_station = data_2_mapping[s_no]["MRT"]
         district = data_2_mapping[s_no]["District"]
 
-        # 如果官方地址有明顯錯誤，可在這裡做特例手動修正
-        # if s_no == "2011051800000057":  # 陽明山溫泉區
-        #     district = "士林區"  # 視需求手動更正
 
     final_results.append({
         "SpotTitle": attraction_title,
@@ -114,11 +104,9 @@ with open(output_file_spot, "w", encoding="utf-8", newline="") as csvfile:
     writer.writerows(final_results)
 print(f"CSV output complete: {output_file_spot}")
 
-# 5. 產出 mrt.csv
 mrt_dict = {}
 for item in data_list_1_layer2:
     attraction_title = item.get("stitle", "").strip()
-    # info = item.get("info", "").strip()   # <--- 不再用 info 來對應
 
     s_no = item.get("SERIAL_NO", "").strip()
     mrt_station = "None"

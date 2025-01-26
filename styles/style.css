@@ -550,6 +550,10 @@ h2 {
 
     @media screen and (max-width: 360px) {
 
+        .card h2 {
+            width: 100%; /* 不扣除寬度，撐滿容器 */
+        }
+
         .content {
             display: flex;
             justify-content: center;   

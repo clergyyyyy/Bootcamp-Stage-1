@@ -14,10 +14,9 @@ def extract_first_jpg(filelist):
 url1 = 'https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1'
 url2 = 'https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-2'
 
-#=======【新增Try-Except & 延長timeout】=======#
 try:
-    response1 = requests.get(url1, timeout=5)  # timeout由1增至5
-    response1.raise_for_status()              # 若出現非2xx狀態則丟出HTTPError
+    response1 = requests.get(url1, timeout=5)
+    response1.raise_for_status()
     data_json_1 = json.loads(response1.text)
 except requests.exceptions.Timeout:
     print("Timeout occurred when fetching url1. Please try again later or increase the timeout value.")
@@ -33,7 +32,7 @@ except Exception as e:
     sys.exit(1)
 
 try:
-    response2 = requests.get(url2, timeout=5)  # timeout由1增至5
+    response2 = requests.get(url2, timeout=5)
     response2.raise_for_status()
     data_json_2 = json.loads(response2.text)
 except requests.exceptions.Timeout:
@@ -48,7 +47,6 @@ except requests.exceptions.HTTPError as e:
 except Exception as e:
     print(f"An unexpected error occurred when fetching url2: {e}")
     sys.exit(1)
-#=======【新增Try-Except & 延長timeout】=======#
 
 #print(type(data_json_1))  # 應該顯示 <class 'dict'>
 #print(type(data_json_2))  # 應該顯示 <class 'dict'>
@@ -78,87 +76,14 @@ for item in data_list_1_layer2:
 
     #print(f"ATTR NAME: {attraction_title}, INFO: {info[0:10]}")
 
-#Parse Logic
-#Case 1: start with 捷運站名： end with 站
-#Case 2: start with 捷運 end with 站
-#Case 3: start with 捷運動物園 no 站
-#Case 4: 沒有寫捷運 但有線至
-#Case 5: 沒有寫捷運 但有線
-#Case 6: 沒有包含捷運 None
-#例外處理：寫死用mapping 表
-
-#捷運車站站名字數不得超過六個字
-pattern_1 = r"捷運站名：([\u4e00-\u9fa5]{2,6})站" #中間只保留1-10個捷運站
-pattern_2 = r"捷運([\u4e00-\u9fa5]{1,10})站" #中間只保留1-10個捷運站
-pattern_3 = r"捷運([\u4e00-\u9fa5]{2,6})" #有捷運 沒有站
-pattern_4 = r"線至([\u4e00-\u9fa5]{2,6})站" #沒有寫捷運 但有線至
-pattern_5 = r"線([\u4e00-\u9fa5]{2,6})站" #沒有寫捷運 但有線
-pattern_new = r"捷運.*線至([\u4e00-\u9fa5]{2,6})站" #有捷運又有限制 #最嚴格 和case1一起判斷
-check_pattern_results = []
-
-fixed_mrt_mapping = {
-    "臺北市鄉土教育中心(剝皮寮歷史街區)": "龍山寺",
-    "北投文物館": "北投",
-    "行天宮北投分宮-忠義廟": ["復興崗", "忠義"],  #多站
-    "臺北市立美術館": "圓山",
-    "台北探索館": "市政府",
-    "台北當代藝術館": "中山",
-    "陽明山溫泉區": "劍潭",
-    "北投圖書館": "新北投",
-    "雙溪生活水岸": ["芝山", "士林"],
-    "臺北市鄉土教育中心(剝皮寮歷史街區)": "龍山寺",
-    "行天宮": "行天宮",
-    "新北投溫泉區": "新北投",
-}
 
 for item in data_list_1_layer2:
     info = item.get("info", '')
     attraction_title = item.get("stitle", '')
 
-    match_pattern_1 = re.search(pattern_1, info)
-    match_pattern_2 = re.search(pattern_2, info)
-    match_pattern_3 = re.search(pattern_3, info)
-    match_pattern_4 = re.search(pattern_4, info)
-    match_pattern_5 = re.search(pattern_5, info)
-    match_pattern_new = re.search(pattern_new, info)
-
     matched = False
     
-    if attraction_title in fixed_mrt_mapping:
-        MRT_Station = fixed_mrt_mapping[attraction_title]
-        check_pattern_results.append({"Case": "Fixed-Mapping", "ATTR_NAME": attraction_title, "INFO": MRT_Station})
-        matched = True
-    if not matched and match_pattern_1 and match_pattern_new:
-        MRT_Station = match_pattern_1.group(1)
-        check_pattern_results.append({"Case": "Case 1", "ATTR_NAME": attraction_title, "INFO": MRT_Station})
-        matched = True
-    elif not matched and match_pattern_2:
-        MRT_Station = match_pattern_2.group(1)
-        check_pattern_results.append({"Case": "Case 2", "ATTR_NAME": attraction_title, "INFO": MRT_Station})
-        matched = True
-    elif not matched and match_pattern_3:
-        MRT_Station = match_pattern_3.group(1)
-        check_pattern_results.append({"Case": "Case 3", "ATTR_NAME": attraction_title, "INFO": MRT_Station})
-        matched = True
-    elif not matched and match_pattern_4:
-        MRT_Station = match_pattern_4.group(1)
-        check_pattern_results.append({"Case": "Case 4", "ATTR_NAME": attraction_title, "INFO": MRT_Station})
-        matched = True
-    elif not matched and match_pattern_5:
-        MRT_Station = match_pattern_5.group(1)
-        check_pattern_results.append({"Case": "Case 5", "ATTR_NAME": attraction_title, "INFO": MRT_Station})
-        matched = True
-    elif not matched and "捷運" not in info:
-        check_pattern_results.append({"Case": "Case 6", "ATTR_NAME": attraction_title, "INFO": None})
-        matched = False
 
-#針對「捷運」還是移除不掉字的case一次性移除
-for result in check_pattern_results:
-    if result["INFO"]:  #排除none的情況
-        if isinstance(result["INFO"], list):  #如果是列表，移除捷運
-            result["INFO"] = [station.replace("捷運", "") for station in result["INFO"]]
-        elif isinstance(result["INFO"], str):  #如果是字串，直接替換
-            result["INFO"] = result["INFO"].replace("捷運", "")
 
 #for result in check_pattern_results:
 #    print(f"[{result['Case']}] ATTR NAME: {result['ATTR_NAME']}, MRT(parsed): {result['INFO']}") #print all pattern交集
@@ -249,7 +174,7 @@ for item in data_list_1_layer2:
 #for row in final_results:
 #    print(row)
 
-output_file = "spot.csv"
+output_file = "mrt.csv"
 with open(output_file, "w", encoding="utf-8", newline="") as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=["MRTStation", "AttractionTitle"])
     writer.writeheader()
@@ -257,7 +182,7 @@ with open(output_file, "w", encoding="utf-8", newline="") as csvfile:
 
 print(f"CSV output complete:{output_file}")
 
-output_file = "final_results.csv"
+output_file = "spot.csv"
 with open(output_file, "w", encoding="utf-8", newline="") as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=["SpotTitle", "District", "Longitude", "Latitude", "ImageURL"])
     writer.writeheader()

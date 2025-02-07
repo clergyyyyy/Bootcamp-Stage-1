@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}首頁{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>歡迎光臨，請輸入帳號密碼</h1>
+    </header>
+    <div class="container">
+
+        <div class="登入系統">
+            <h2>
+                登入系統
+            </h2>
+            <form action="/api/signin" method="POST" onsubmit="return verifyCheckbox(event)">
+                <div class="input-group">
+                    <label>帳號</label>
+                    <input type="account" name="account" required>
+                </div>
+                <div class="input-group">    
+                    <label>密碼</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="input-group">
+                <div>
+                    <label for="agree">同意條款</label>
+                    <input type="checkbox" id="agree" name="agree">
+                </div>
+                </div>
+                <button type="submit">登入</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', path='/script.js') }}"></script>
+{% endblock %}

@@ -7,3 +7,15 @@ function verifyCheckbox(event) {
     }
     return true;
 }
+
+function verifyPositiveInteger(event) {
+    let inputValue = document.getElementById("integer").value;
+    let floatValue = parseFloat(inputValue);
+    if (Number.isNaN(floatValue) || floatValue < 1 || !Number.isInteger(floatValue)) {
+        alert("請輸入大於0的正整數");
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+

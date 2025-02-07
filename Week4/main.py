@@ -22,7 +22,7 @@ async def home(request: Request):
         return RedirectResponse(url="/member")
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.post("/api/signin")
+@app.post("/signin")
 async def checkAccount(request: Request, account: str = Form(...), password: str = Form(...)):
     if account == "test" and password == "test":
         request.session["signed_in"] = True #SIGNED-IN state to TRUE 
@@ -44,6 +44,14 @@ async def signout(request: Request):
 async def error(request: Request, message:str = "帳號、或密碼輸入錯誤"):
     return templates.TemplateResponse(
         "error.html", {"request": request, "message": message}
+    )
+
+@app.get("/square")
+def get_square(request: Request, integer: Annotated[int, Query]):
+    result = integer * integer
+    return templates.TemplateResponse(
+        "square.html", 
+        {"request": request, "result": result}
     )
 
 @app.exception_handler(404)

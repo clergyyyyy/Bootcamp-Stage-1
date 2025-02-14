@@ -11,7 +11,7 @@ CREATE DATABASE website;
 SHOW DATABASES;
 USE website;
 ```
-![CREATE DATABASE](Week5/assets/2.1_Create_Use.png "CREATE DATABASE")
+![CREATE DATABASE](assets/2.1_Create_Use.png "CREATE DATABASE")
 ### Create a new table named member, in the website database, designed as below:
 ```
 CREATE TABLE member (

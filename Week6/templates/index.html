@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}首頁{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>歡迎光臨，請註冊登入系統</h1>
+    </header>
+    <div class="container">
+
+        <div class="註冊帳號">
+            <h2>
+                註冊帳號
+            </h2>
+            <form action="/signup" method="POST">
+                <div class="input-group">
+                    <label>姓名</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="input-group">
+                    <label>帳號</label>
+                    <input type="text" name="account" required>
+                </div>
+                <div class="input-group">    
+                    <label>密碼</label>
+                    <input type="text" name="password" required>
+                </div>
+                <button type="submit">註冊</button>
+            </form>
+        </div>
+        <div class="登入系統">
+        <h2>
+            登入系統
+        </h2>
+        <form action="/signin" method="POST"> <!--onsubmit="return verifyCheckbox(event)*/-->
+            <div class="input-group">
+                <label>帳號</label>
+                <input type="account" name="account" required>
+            </div>
+            <div class="input-group">    
+                <label>密碼</label>
+                <input type="password" name="password" required>
+            </div>
+            <div class="input-group">
+            <!--
+                <div>
+                <label for="agree">同意條款</label>
+                <input type="checkbox" id="agree" name="agree">
+            </div>
+            -->
+            </div>
+            <button type="submit">登入</button>
+        </form>
+        </div>
+    </div>
+    </div>
+    <script src="{{ url_for('static', path='/script.js') }}"></script>
+{% endblock %}

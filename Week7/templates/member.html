@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}會員頁{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>歡迎光臨，這是會員頁</h1>
+    </header>
+    <div class="content">
+        <p>恭喜您，成功登入系統</p>
+        <a href="/signout">登出系統</a>
+    </div>
+
+    <div class="content">
+        <h2>查詢會員姓名</h2>
+        <input type="text" id="searchUsername" placeholder="輸入會員帳號">
+        <button onclick="searchMember()">查詢</button>
+        <div id="result_username"></div>
+    </div>
+
+    <div class="content">
+        <h2>更新我的姓名</h2>
+        <input type="text" id="updateName" placeholder="輸入新的姓名">
+        <button onclick="updateName()">更新</button>
+            <div id="result_name"></div>
+    </div>
+
+    <div class="content">
+        <h2>快來留言吧</h2>
+        <form action="/createMessage" method="POST">
+            <label for="content">內容</label>
+            <input type="text" id="content" name="content" required>
+            <button type="submit">送出</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <h2>留言列表</h2>
+        <ul>
+            {% for message in messages %}
+                <li>
+                    <strong>{{ message['sender_name'] }}</strong>: {{ message['content'] }}
+                    
+                    {% if message['member_id'] == member_id %}
+                    <form action="/deleteMessage" method="POST" style="display: inline;" onsubmit="return confirmDelete()">
+                        <input type="hidden" name="message_id" value="{{ message['id'] }}">
+                        <button class="delete-btn" type="submit">X</button>
+                    </form>                    
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

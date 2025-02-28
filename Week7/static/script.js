@@ -24,9 +24,9 @@ function confirmDelete() {
     
             if (data.ok) {
                 alert("姓名更新成功！");
-                document.getElementById("result_name").innerHTML = `<p>更新成功！更新後姓名: ${data.name}</p>`;
+                document.getElementById("result_name").innerHTML = `<p>更新成功</p>`;
             } else {
-                alert("姓名更新失敗");
+                alert("姓名更新失敗Failed to Update");
             }
         } catch (error) {
             console.error("更新失敗", error);
@@ -59,7 +59,7 @@ async function searchMember() {
         if (data.data) {
             resultDiv.innerHTML = `<p>${data.data.name} (${data.data.username})</p>`
         } else {
-            resultDiv.innerHTML = "<p>No data</p>";
+            resultDiv.innerHTML = "<p>無此會員</p>";
         }
         
     } catch (error) {

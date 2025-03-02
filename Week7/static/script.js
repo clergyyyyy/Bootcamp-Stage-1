@@ -4,35 +4,40 @@ function confirmDelete() {
 
     
     
-    async function updateName() {
-        const name = document.getElementById("updateName").value.trim();
-        if (!name) {
-            alert("請輸入欲更新的姓名");
-            return;
-        }
-    
-        try {
-            const response = await fetch(`/api/member`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ name: name }) // 將新的名字以 JSON 格式傳送
-            });
-    
-            const data = await response.json();
-    
-            if (data.ok) {
-                alert("姓名更新成功！");
-                document.getElementById("result_name").innerHTML = `<p>更新成功</p>`;
-            } else {
-                alert("姓名更新失敗Failed to Update");
-            }
-        } catch (error) {
-            console.error("更新失敗", error);
-            alert("發生錯誤，請稍後再試！");
-        }
+async function updateName() {
+    const name = document.getElementById("updateName").value.trim();
+    if (!name) {
+        alert("請輸入欲更新的姓名");
+        return;
     }
+
+    try {
+        const response = await fetch(`/api/member`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name: name })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "未知錯誤");
+        }
+
+        const data = await response.json();
+
+        if (data.ok) {
+            alert("姓名更新成功！");
+            document.getElementById("result_name").innerHTML = `<p>更新成功</p>`;
+        } else {
+            alert("姓名更新失敗Failed to Update");
+        }
+    } catch (error) {
+        alert(`姓名更新失敗：${error.message}`);
+        console.error("更新失敗", error);
+    }
+}
     
 
 async function searchMember() {

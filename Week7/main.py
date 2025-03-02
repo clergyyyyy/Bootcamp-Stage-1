@@ -61,7 +61,6 @@ def get_message_username_all():
 def create_message_member_id(member_id, content):
     with mysql.connector.connect(**DB_CONFIG) as conn:
         with conn.cursor(dictionary=True) as cursor:
-            # 檢查 user id 是否存在
             cursor.execute("SELECT id FROM member WHERE id = %s", (member_id,))
             if not cursor.fetchone():
                 return False
@@ -145,37 +144,19 @@ async def member(request: Request):
     )
 
 
-@app.get("/api/member")
-async def get_member(request: Request, username: str = Query(None)):
-    if not request.session.get("signed_in"):
-        return JSONResponse(content={"data": None}, status_code=200)
-
-    if not username:
-        return JSONResponse(content={"data": None}, status_code=200)
-
-    user = get_member_username(username)
-    if user:
-        return JSONResponse(content={"data": {
-            "id": user["id"],
-            "name": user["name"],
-            "username": user["username"]
-        }}, status_code=200)
-
-    return JSONResponse(content={"data": None}, status_code=200)
-
 @app.patch("/api/member")
 async def update_member(request: Request, data: dict = Body(...)):
     if not request.session.get("signed_in"):
-        return JSONResponse(content={"ok": False}, status_code=401)
+        return JSONResponse(content={"error": True, "message": "尚未登入"}, status_code=401)
 
     name = data.get("name")
-    if not name:
-        return JSONResponse(content={"ok": False}, status_code=400)
+    if not name.strip():
+        return JSONResponse(content={"error": True, "message": "更新的姓名為空白"}, status_code=400)
 
     username = request.session.get("username")
     update_member_username(name, username)
 
-    return JSONResponse(content={"name": name, "ok": True}, status_code=200)
+    return JSONResponse(content={"ok": True, "name": name}, status_code=200)
 
 
 @app.post("/createMessage")
